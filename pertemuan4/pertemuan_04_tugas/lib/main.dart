@@ -76,11 +76,24 @@ class _HomePageState extends State<HomePage> {
     return '${dt.day}/${dt.month}/${dt.year} ${dt.hour}:${dt.minute}';
   }
 
-  // Ubah fungsi hapus menggunakan object, bukan index, agar aman saat list difilter
   void _hapusCatatan(Catatan c) {
+    final judulYangDihapus = c.judul;
+
     setState(() {
       _catatan.remove(c);
     });
+
+    if (mounted) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Catatan "$judulYangDihapus" berhasil dihapus.'),
+          // Baris behavior: SnackBarBehavior.floating DIHAPUS
+          duration: const Duration(seconds: 2),
+        ),
+      );
+    }
   }
 
   @override
